@@ -4,7 +4,7 @@ import sys
 from geant4_pybind import *
 
 
-class XXDetectorConstruction(G4VUserDetectorConstruction):
+class X1DetectorConstruction(G4VUserDetectorConstruction):
   """
   Simple model: a sphere with water in the box with air.
   """
@@ -20,9 +20,9 @@ class XXDetectorConstruction(G4VUserDetectorConstruction):
     envelop_y = 10*cm
     envelop_z = 10*cm
 
-    envelop_mat = nist.FindOrBuildMaterial("G4_AIR")
+    envelop_mat = nist.FindOrBuildMaterial("G4_AIR") 
 
-    sphere_rad = 7*cm
+    sphere_rad = 4*cm
     mat = nist.FindOrBuildMaterial("G4_WATER")
 
     checkOverlaps = True
@@ -36,6 +36,10 @@ class XXDetectorConstruction(G4VUserDetectorConstruction):
 
     lWorld = G4LogicalVolume(sWorld, envelop_mat, "World")
 
+    sEnvelop = G4Box("Envelop", 0.5*envelop_x, 0.5*envelop_y, 0.5*envelop_z)
+
+    lEnvelop = G4LogicalVolume(sEnvelop, envelop_mat, "Envelop")
+
     pWorld = G4PVPlacement(None, G4ThreeVector(),
                            lWorld, "World", None, False,
                            0, checkOverlaps)
@@ -43,7 +47,10 @@ class XXDetectorConstruction(G4VUserDetectorConstruction):
     sSphere = G4Orb("Head", sphere_rad)
     lSphere = G4LogicalVolume(sSphere, mat, "Head")
     G4PVPlacement(None, G4ThreeVector(), lSphere,
-                  "Head", lWorld, True, 0, checkOverlaps)
+                  "Head", lEnvelop, True, 0, checkOverlaps)
+    G4PVPlacement(None, G4ThreeVector(), lEnvelop, 
+                      "Envelop", lWorld, True, 0, checkOverlaps)
+
  
     self.fScoringVolume = lSphere
  
@@ -59,7 +66,7 @@ if len(sys.argv) == 1:
 
 runManager = G4RunManagerFactory.CreateRunManager(G4RunManagerType.Serial)
 
-runManager.SetUserInitialization(XXDetectorConstruction())
+runManager.SetUserInitialization(X1DetectorConstruction())
 
 # Physics list
 physicsList = QBBC()
