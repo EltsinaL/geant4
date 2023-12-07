@@ -4,7 +4,7 @@ import sys
 from geant4_pybind import *
 
 
-class XXDetectorConstruction(G4VUserDetectorConstruction):
+class X3DetectorConstruction(G4VUserDetectorConstruction):
   """
   Simple model: a sphere with water, and inside a sphere with iron and a sphere with carbon in the box with air.
   """
@@ -22,8 +22,8 @@ class XXDetectorConstruction(G4VUserDetectorConstruction):
 
     envelop_mat = nist.FindOrBuildMaterial("G4_AIR")
 
-    sphere_rad = 7*cm
-    sphere_rad1 = 5*cm
+    sphere_rad = 4*cm
+    sphere_rad1 = 3*cm
     sphere_rad2 = 2*cm
     mat = nist.FindOrBuildMaterial("G4_WATER")
     mat1 = nist.FindOrBuildMaterial("G4_Fe")
@@ -40,6 +40,10 @@ class XXDetectorConstruction(G4VUserDetectorConstruction):
 
     lWorld = G4LogicalVolume(sWorld, envelop_mat, "World")
 
+    sEnvelop = G4Box("Envelop", 0.5*envelop_x, 0.5*envelop_y, 0.5*envelop_z)
+
+    lEnvelop = G4LogicalVolume(sEnvelop, envelop_mat, "Envelop")
+
     pWorld = G4PVPlacement(None, G4ThreeVector(),
                            lWorld, "World", None, False,
                            0, checkOverlaps)
@@ -47,7 +51,7 @@ class XXDetectorConstruction(G4VUserDetectorConstruction):
     sSphere = G4Orb("Head", sphere_rad)
     lSphere = G4LogicalVolume(sSphere, mat, "Head")
     G4PVPlacement(None, G4ThreeVector(), lSphere,
-                  "Head", lWorld, True, 0, checkOverlaps)
+                  "Head", lEnvelop, True, 0, checkOverlaps)
 
     sOrb1 = G4Orb("Bullet", sphere_rad1)
     lOrb1 = G4LogicalVolume(sOrb1, mat, "Bullet")
@@ -58,6 +62,8 @@ class XXDetectorConstruction(G4VUserDetectorConstruction):
     lOrb2 = G4LogicalVolume(sOrb2, mat, "Coal")
     G4PVPlacement(None, G4ThreeVector(0,0,0.5*sphere_rad), lOrb2,
                   "Coal",lSphere, True, 0, checkOverlaps)
+    G4PVPlacement(None, G4ThreeVector(), lEnvelop, 
+                      "Envelop", lWorld, True, 0, checkOverlaps)
 
  
     self.fScoringVolume = lSphere
@@ -74,7 +80,7 @@ if len(sys.argv) == 1:
 
 runManager = G4RunManagerFactory.CreateRunManager(G4RunManagerType.Serial)
 
-runManager.SetUserInitialization(XXDetectorConstruction())
+runManager.SetUserInitialization(X3DetectorConstruction())
 
 # Physics list
 physicsList = QBBC()
