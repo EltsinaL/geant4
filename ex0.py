@@ -22,7 +22,7 @@ class XXDetectorConstruction(G4VUserDetectorConstruction):
 
     envelop_mat = nist.FindOrBuildMaterial("G4_AIR")
 
-    sphere_rad = 7*cm
+    sphere_rad = 4*cm
     mat = nist.FindOrBuildMaterial("G4_WATER")
 
     checkOverlaps = True
