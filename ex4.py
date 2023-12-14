@@ -55,12 +55,12 @@ class X4DetectorConstruction(G4VUserDetectorConstruction):
                   "Head", lEnvelop, True, 0, checkOverlaps)
 
     sOrb1 = G4Orb("Bullet", sphere_rad1)
-    lOrb1 = G4LogicalVolume(sOrb1, mat, "Bullet")
+    lOrb1 = G4LogicalVolume(sOrb1, mat1, "Bullet")
     G4PVPlacement(None, G4ThreeVector(0,0,-0.8*sphere_rad), lOrb1,
                   "Bullet",lSphere, True, 0, checkOverlaps)
 
     sOrb2 = G4Orb("Coal", sphere_rad2)
-    lOrb2 = G4LogicalVolume(sOrb2, mat, "Coal")
+    lOrb2 = G4LogicalVolume(sOrb2, mat2, "Coal")
     G4PVPlacement(None, G4ThreeVector(0,0,0.25*sphere_rad), lOrb2,
                   "Coal",lSphere, True, 0, checkOverlaps)
     G4PVPlacement(None, G4ThreeVector(), lEnvelop, 
