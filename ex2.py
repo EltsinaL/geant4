@@ -23,8 +23,8 @@ class X2DetectorConstruction(G4VUserDetectorConstruction):
     envelop_mat = nist.FindOrBuildMaterial("G4_AIR")
 
     sphere_rad = 4*cm
-    sphere_rad1 = 2*cm
-    sphere_rad2 = 0.5*cm
+    sphere_rad1 = 0.5*cm
+    sphere_rad2 = 1.5*cm
     mat = nist.FindOrBuildMaterial("G4_WATER")
     mat1 = nist.FindOrBuildMaterial("G4_Fe")
     mat2 = nist.FindOrBuildMaterial("G4_C")
