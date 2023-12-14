@@ -23,8 +23,8 @@ class X3DetectorConstruction(G4VUserDetectorConstruction):
     envelop_mat = nist.FindOrBuildMaterial("G4_AIR")
 
     sphere_rad = 4*cm
-    sphere_rad1 = 3*cm
-    sphere_rad2 = 2*cm
+    sphere_rad1 = 1*cm
+    sphere_rad2 = 1.5*cm
     mat = nist.FindOrBuildMaterial("G4_WATER")
     mat1 = nist.FindOrBuildMaterial("G4_Fe")
     mat2 = nist.FindOrBuildMaterial("G4_C")
@@ -55,7 +55,7 @@ class X3DetectorConstruction(G4VUserDetectorConstruction):
 
     sOrb1 = G4Orb("Bullet", sphere_rad1)
     lOrb1 = G4LogicalVolume(sOrb1, mat, "Bullet")
-    G4PVPlacement(None, G4ThreeVector(0,0,0), lOrb1,
+    G4PVPlacement(None, G4ThreeVector(0,0,-0.25), lOrb1,
                   "Bullet",lSphere, True, 0, checkOverlaps)
 
     sOrb2 = G4Orb("Coal", sphere_rad2)
