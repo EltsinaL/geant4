@@ -6,7 +6,6 @@ import math
 
 class X5DetectorConstruction(G4VUserDetectorConstruction):
   """
-  Simple model: a sphere with water, and inside a sphere with iron and a sphere with carbon in the box with air.
   """
 
   def __init__(self):
@@ -32,13 +31,15 @@ class X5DetectorConstruction(G4VUserDetectorConstruction):
     orb_rad = 6*cm
     mat2 = nist.FindOrBuildMaterial("G4_WATER")
 
-    xSemiAxis1 = 2*cm
-    ySemiAxis1 = 2*cm
-    zSemiAxis1 = 2.5*cm
+    xSemiAxis1 = 1*cm
+    ySemiAxis1 = 1*cm
+    zSemiAxis1 = 1.6*cm
     mat3 = nist.FindOrBuildMaterial("G4_BENZENE")
 
-    xSemiAxis2 = 2*cm
-    ySemiAxis2 = 2*cm
+    zTrans = G4Transform3D(G4RotationMatrix(), G4ThreeVector(-0.4*orb_rad, 0.15*orb_rad, 0))
+
+    xSemiAxis2 = 2.6*cm
+    ySemiAxis2 = 3.2*cm
     zSemiAxis2 = 2.5*cm
     mat4 = nist.FindOrBuildMaterial("G4_ACETONE")
 
@@ -68,12 +69,13 @@ class X5DetectorConstruction(G4VUserDetectorConstruction):
     sOrb = G4Orb("Blood", orb_rad)
     sBrain1 = G4Ellipsoid("Brain1", xSemiAxis1, ySemiAxis1, zSemiAxis1, 0, 0)
     sBrain2 = G4Ellipsoid("Brain2", xSemiAxis2, ySemiAxis2, zSemiAxis2, 0, 0)
-
+    
+    sCutOrb = G4SubtractionSolid("Cerebral", sBrain2, sBrain1, zTrans)
 
     lSphere = G4LogicalVolume(sSphere, mat1, "Head")
     lOrb = G4LogicalVolume(sOrb, mat2, "Blood")
     lBrain1 = G4LogicalVolume(sBrain1, mat3, "Brain1")
-    lBrain2 = G4LogicalVolume(sBrain2, mat4, "Brain2")
+    lBrain2 = G4LogicalVolume(sCutOrb, mat4, "Brain2")
 
 
     G4PVPlacement(None, G4ThreeVector(), lSphere,
@@ -82,10 +84,10 @@ class X5DetectorConstruction(G4VUserDetectorConstruction):
     G4PVPlacement(None, G4ThreeVector(), lOrb,
                   "Blood",lSphere, True, 0, checkOverlaps)
 
-    G4PVPlacement(None, G4ThreeVector(-0.3*orb_rad, 0.15*orb_rad, 0), lBrain1,
+    G4PVPlacement(None, G4ThreeVector(-0.2*orb_rad, 0.15*orb_rad, 0), lBrain1,
                   "Brain1",lOrb, True, 0, checkOverlaps)
 
-    G4PVPlacement(None, G4ThreeVector(0.3*orb_rad, 0.15*orb_rad, 0), lBrain2,
+    G4PVPlacement(None, G4ThreeVector(0.2*orb_rad, 0*orb_rad, 0), lBrain2,
                   "Brain2",lOrb, True, 0, checkOverlaps)
 
 
