@@ -76,7 +76,7 @@ class X5DetectorConstruction(G4VUserDetectorConstruction):
 
 
     G4PVPlacement(None, G4ThreeVector(), lSphere,
-                  "Head", lWorld, True, 0, checkOverlaps)
+                  "Head", lBox, True, 0, checkOverlaps)
 
     G4PVPlacement(None, G4ThreeVector(), lOrb,
                   "Blood",lSphere, True, 0, checkOverlaps)
