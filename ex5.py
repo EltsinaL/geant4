@@ -21,33 +21,30 @@ class X5DetectorConstruction(G4VUserDetectorConstruction):
 
     envelop_mat = nist.FindOrBuildMaterial("G4_AIR")
 
-    box_x = 1.3*envelop_x
-    box_y = 1.3*envelop_y
-    box_z = 1.3*envelop_z
+    box_x = 1*envelop_x
+    box_y = 1*envelop_y
+    box_z = 1*envelop_z
 
-    sphere_rad = 7*cm
     mat1 = nist.FindOrBuildMaterial("G4_B-100_BONE")
-    
-    orb_rad = 6*cm
     mat2 = nist.FindOrBuildMaterial("G4_WATER")
 
-    xSemiAxis1 = 1*cm
-    ySemiAxis1 = 1*cm
-    zSemiAxis1 = 1.6*cm
+    xSemiAxis1 = 1.3*cm
+    ySemiAxis1 = 1.3*cm
+    zSemiAxis1 = 1*cm
     mat3 = nist.FindOrBuildMaterial("G4_BENZENE")
 
-    zTrans = G4Transform3D(G4RotationMatrix(), G4ThreeVector(-0.4*orb_rad, 0.15*orb_rad, 0))
+    zTrans = G4Transform3D(G4RotationMatrix(), G4ThreeVector(-0.24*envelop_x, -0.1*envelop_y, 0))
 
     xSemiAxis2 = 2.6*cm
-    ySemiAxis2 = 3.2*cm
+    ySemiAxis2 = 3.5*cm
     zSemiAxis2 = 2.5*cm
     mat4 = nist.FindOrBuildMaterial("G4_ACETONE")
 
     checkOverlaps = True
 
-    world_x = 1.4*envelop_x
-    world_y = 1.4*envelop_y
-    world_z = 1.4*envelop_z
+    world_x = 1.5*envelop_x
+    world_y = 1.5*envelop_y
+    world_z = 1.5*envelop_z
 
     sWorld = G4Box("World", 0.5*world_x, 0.5*world_y,
                    0.5*world_z)
@@ -65,8 +62,8 @@ class X5DetectorConstruction(G4VUserDetectorConstruction):
                            lBox, "Box", lWorld, False,
                            0, checkOverlaps)
 
-    sSphere = G4Sphere("Head", 0.49*envelop_x, 0.5*envelop_x, 2*math.pi, 2*math.pi, 0, 2*math.pi)
-    sOrb = G4Orb("Blood", orb_rad)
+    sSphere = G4Sphere("Head", 0.45*envelop_x, 0.5*envelop_x, 2*math.pi, 2*math.pi, 0, 2*math.pi)
+    sOrb = G4Orb("Blood", 0.45*envelop_x)
     sBrain1 = G4Ellipsoid("Brain1", xSemiAxis1, ySemiAxis1, zSemiAxis1, 0, 0)
     sBrain2 = G4Ellipsoid("Brain2", xSemiAxis2, ySemiAxis2, zSemiAxis2, 0, 0)
     
@@ -84,10 +81,10 @@ class X5DetectorConstruction(G4VUserDetectorConstruction):
     G4PVPlacement(None, G4ThreeVector(), lOrb,
                   "Blood",lSphere, True, 0, checkOverlaps)
 
-    G4PVPlacement(None, G4ThreeVector(-0.2*orb_rad, 0.15*orb_rad, 0), lBrain1,
+    G4PVPlacement(None, G4ThreeVector(-0.12*envelop_x, -0.1*envelop_y, 0), lBrain1,
                   "Brain1",lOrb, True, 0, checkOverlaps)
 
-    G4PVPlacement(None, G4ThreeVector(0.2*orb_rad, 0*orb_rad, 0), lBrain2,
+    G4PVPlacement(None, G4ThreeVector(0.12*envelop_x, 0*envelop_y, 0), lBrain2,
                   "Brain2",lOrb, True, 0, checkOverlaps)
 
 
