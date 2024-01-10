@@ -64,7 +64,7 @@ class ExamDetectorConstruction(G4VUserDetectorConstruction):
 
      return pWorld
 
-
+#----
 class ExamActionInitialization(G4VUserActionInitialization):
   """
   Initialization of user code.
@@ -80,7 +80,7 @@ class ExamActionInitialization(G4VUserActionInitialization):
 
     eventAction = ExamEventAction(runAction)
     self.SetUserAction(eventAction)
-
+#----
 class ExamPrimaryGeneratorAction(G4VUserPrimaryGeneratorAction):
     def __init__(self):
         super().__init__()
@@ -90,7 +90,7 @@ class ExamPrimaryGeneratorAction(G4VUserPrimaryGeneratorAction):
         particleTable = G4ParticleTable.GetParticleTable()
         particle = particleTable.FindParticle("gamma")
         self.fParticleGun.SetParticleDefinition(particle)
-        self.fParticleGun.SetParticleMomentumDirection(G4ThreeVector(0, 0, 1))
+        self.fParticleGun.SetParticleMomentumDirection(G4ThreeVector(1, 0, 0))
         self.fParticleGun.SetParticleEnergy(1*MeV)
 
     def GeneratePrimaries(self, anEvent):
@@ -116,13 +116,13 @@ class ExamPrimaryGeneratorAction(G4VUserPrimaryGeneratorAction):
                             "MyCode0002", G4ExceptionSeverity.JustWarning, msg)
 
             #size = 0.3
-            x0 = envSizeX * (G4UniformRand() - 0.5)
+            x0 = -0.5 * envSizeX
             y0 = 0
-            z0 = -0.5     
+            z0 = 0    
     
             self.fParticleGun.SetParticlePosition(G4ThreeVector(x0, y0, z0))
             self.fParticleGun.GeneratePrimaryVertex(anEvent)
-
+#----
 class ExamRunAction(G4UserRunAction):
     def __init__(self):
      super().__init__()
@@ -198,7 +198,7 @@ class ExamRunAction(G4UserRunAction):
      self.edep += edep
      self.edep2 += edep*edep
 
-
+#----
 class ExamEventAction(G4UserEventAction):
   def __init__(self, runAction):
     super().__init__()
@@ -212,7 +212,7 @@ class ExamEventAction(G4UserEventAction):
 
   def AddEdep(self, edep):
     self.fEdep += edep
-
+#----
 class ExamSteppingAction(G4UserSteppingAction):
   def __init__(self, eventAction):
     super().__init__()
@@ -233,7 +233,7 @@ class ExamSteppingAction(G4UserSteppingAction):
     # collect energy deposited in this step
     edepStep = aStep.GetTotalEnergyDeposit()
     self.fEventAction.AddEdep(edepStep)
-
+#----
 
 
 
